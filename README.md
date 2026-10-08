@@ -17,9 +17,14 @@
 
 3. Qoka의 프로젝트 열기에서 clone한 `IBS6503-2026-02` 폴더를 엽니다
 
-새 자료가 올라오면 내 fork 페이지에서 **Sync fork**를 누른 뒤, Qoka 대화 입력창에 입력합니다.
+새 자료가 올라오면 내 fork 페이지에서 **Sync fork** → **Update branch**를 누른 뒤, Qoka 대화 입력창에 입력합니다.
 
 > GitHub에서 최신 상태를 받아와줘.
+
+- `Already up to date.`인데 새 파일이 없으면 Sync fork를 하지 않은 것입니다
+- `Need to specify how to reconcile divergent branches`가 나오면 "pull할 때 merge로 합치도록 설정하고 다시 받아와줘."라고 입력합니다
+- `Your local changes ... would be overwritten`이 나오면 `data/`나 `course/`, README의 원본을 고친 것입니다. 바꾼 것을 버리고 다시 받아옵니다
+- Sync fork 창의 **Discard** 버튼은 누르지 않습니다
 
 ---
 
@@ -42,6 +47,7 @@ IBS6503-2026-02/
 | 파일 | 내용 |
 |---|---|
 | `data/airway_scaledcounts.subset.tsv` | 사람 기도 평활근 세포 RNA-seq 카운트. 유전자 38,694개, 샘플 4개 |
+| `data/week4/` | 같은 실험의 read 일부(FASTQ)와 hg19 chr1 참조 서열. 자세한 내용은 `data/week4/README.md` |
 
 출처: Himes BE, et al. *RNA-Seq transcriptome profiling identifies CRISPLD2 as a glucocorticoid responsive gene that modulates cytokine function in airway smooth muscle cells.* PLoS One 9(6):e99625 (2014). PMID 24926665
 
@@ -53,6 +59,8 @@ IBS6503-2026-02/
 
 ## 주차별 실습
 
-| 주차 | 주제 | 노트북 |
+| 주차 | 주제 | 실습 자료 |
 |---|---|---|
 | 3 | 저장소 가져오기와 코드 읽기 | `course/labs/week3/week3_reading.ipynb`, `course/labs/week3/top10.py` |
+| 4 | NGS 데이터 구조: read에서 유전체 브라우저까지 | `data/week4/`. IGV Desktop(igv.org/download) 설치 필요 |
+| 5 | DESeq2를 이용한 차등발현 분석 | `course/labs/week5/week5_deseq2.ipynb` |

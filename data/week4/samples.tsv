@@ -1,0 +1,5 @@
+sample	run	cell	dex
+1_control	SRR1039508	N61311	untrt
+1_treated	SRR1039509	N61311	trt
+2_control	SRR1039512	N052611	untrt
+2_treated	SRR1039513	N052611	trt
