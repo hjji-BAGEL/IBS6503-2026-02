@@ -1,0 +1,192 @@
++ echo '### 1. 결과 폴더 준비 ###'
++ mkdir -p index bam fastq
++ echo '### 1b. FASTQ를 공백 없는 로컬 경로로 복사 (hisat2 래퍼가 경로 내 공백을 잘못 파싱하는 문제 회피) ###'
++ for sample in 1_control 1_treated 2_control 2_treated
++ cp '/mnt/c/Users/현종/OneDrive - 인하대학교/문서/Qoka/IBS6503-2026-02/data/week4/1_control.R1.fastq.gz' fastq/1_control.R1.fastq.gz
++ cp '/mnt/c/Users/현종/OneDrive - 인하대학교/문서/Qoka/IBS6503-2026-02/data/week4/1_control.R2.fastq.gz' fastq/1_control.R2.fastq.gz
++ for sample in 1_control 1_treated 2_control 2_treated
++ cp '/mnt/c/Users/현종/OneDrive - 인하대학교/문서/Qoka/IBS6503-2026-02/data/week4/1_treated.R1.fastq.gz' fastq/1_treated.R1.fastq.gz
++ cp '/mnt/c/Users/현종/OneDrive - 인하대학교/문서/Qoka/IBS6503-2026-02/data/week4/1_treated.R2.fastq.gz' fastq/1_treated.R2.fastq.gz
++ for sample in 1_control 1_treated 2_control 2_treated
++ cp '/mnt/c/Users/현종/OneDrive - 인하대학교/문서/Qoka/IBS6503-2026-02/data/week4/2_control.R1.fastq.gz' fastq/2_control.R1.fastq.gz
++ cp '/mnt/c/Users/현종/OneDrive - 인하대학교/문서/Qoka/IBS6503-2026-02/data/week4/2_control.R2.fastq.gz' fastq/2_control.R2.fastq.gz
++ for sample in 1_control 1_treated 2_control 2_treated
++ cp '/mnt/c/Users/현종/OneDrive - 인하대학교/문서/Qoka/IBS6503-2026-02/data/week4/2_treated.R1.fastq.gz' fastq/2_treated.R1.fastq.gz
++ cp '/mnt/c/Users/현종/OneDrive - 인하대학교/문서/Qoka/IBS6503-2026-02/data/week4/2_treated.R2.fastq.gz' fastq/2_treated.R2.fastq.gz
++ echo '### 2. 참조 서열 압축 해제 ###'
++ gunzip -k -c '/mnt/c/Users/현종/OneDrive - 인하대학교/문서/Qoka/IBS6503-2026-02/data/week4/hg19_chr1_11.4Mb.fa.gz'
++ echo '### 3. hisat2 인덱스 생성 ###'
++ hisat2-build index/ref.fa index/ref
+Settings:
+  Output files: "index/ref.*.ht2"
+  Line rate: 6 (line is 64 bytes)
+  Lines per side: 1 (side is 64 bytes)
+  Offset rate: 4 (one in 16)
+  FTable chars: 10
+  Strings: unpacked
+  Local offset rate: 3 (one in 8)
+  Local fTable chars: 6
+  Local sequence length: 57344
+  Local sequence overlap between two consecutive indexes: 1024
+  Endianness: little
+  Actual local endianness: little
+  Sanity checking: disabled
+  Assertions: disabled
+  Random seed: 0
+  Sizeofs: void*:8, int:4, long:8, size_t:8
+Input files DNA, FASTA:
+  index/ref.fa
+Reading reference sizes
+  Time reading reference sizes: 00:00:01
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+  Time to read SNPs and splice sites: 00:00:00
+Using parameters --bmax 75000 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 75000 --dcv 1024
+Constructing suffix-array element generator
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering GFM loop
+Exited GFM loop
+fchr[A]: 0
+fchr[C]: 108000
+fchr[G]: 201991
+fchr[T]: 298617
+fchr[$]: 400000
+Exiting GFM::buildToDisk()
+Returning from initFromVector
+Wrote 4327866 bytes to primary GFM file: index/ref.1.ht2
+Wrote 100008 bytes to secondary GFM file: index/ref.2.ht2
+Re-opening _in1 and _in2 as input streams
+Returning from GFM constructor
+Returning from initFromVector
+Wrote 186841 bytes to primary GFM file: index/ref.5.ht2
+Wrote 101812 bytes to secondary GFM file: index/ref.6.ht2
+Re-opening _in5 and _in5 as input streams
+Returning from HGFM constructor
+Headers:
+    len: 400000
+    gbwtLen: 400001
+    nodes: 400001
+    sz: 100000
+    gbwtSz: 100001
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 0
+    eftabSz: 0
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 25001
+    offsSz: 100004
+    lineSz: 64
+    sideSz: 64
+    sideGbwtSz: 48
+    sideGbwtLen: 192
+    numSides: 2084
+    numLines: 2084
+    gbwtTotLen: 133376
+    gbwtTotSz: 133376
+    reverse: 0
+    linearFM: Yes
+Total time for call to driver() for forward index: 00:00:03
++ echo '### 4. 네 샘플 정렬 -> 위치순 정렬(sort) -> 인덱싱(index) ###'
++ for sample in 1_control 1_treated 2_control 2_treated
+++ nproc
++ hisat2 -p 16 -x index/ref -1 fastq/1_control.R1.fastq.gz -2 fastq/1_control.R2.fastq.gz -S bam/1_control.sam
+7097 reads; of these:
+  7097 (100.00%) were paired; of these:
+    191 (2.69%) aligned concordantly 0 times
+    6906 (97.31%) aligned concordantly exactly 1 time
+    0 (0.00%) aligned concordantly >1 times
+    ----
+    191 pairs aligned concordantly 0 times; of these:
+      0 (0.00%) aligned discordantly 1 time
+    ----
+    191 pairs aligned 0 times concordantly or discordantly; of these:
+      382 mates make up the pairs; of these:
+        212 (55.50%) aligned 0 times
+        170 (44.50%) aligned exactly 1 time
+        0 (0.00%) aligned >1 times
+98.51% overall alignment rate
+++ nproc
++ samtools sort -@ 16 -o bam/1_control.sorted.bam bam/1_control.sam
+[bam_sort_core] merging from 0 files and 16 in-memory blocks...
++ samtools index bam/1_control.sorted.bam
++ rm bam/1_control.sam
++ for sample in 1_control 1_treated 2_control 2_treated
+++ nproc
++ hisat2 -p 16 -x index/ref -1 fastq/1_treated.R1.fastq.gz -2 fastq/1_treated.R2.fastq.gz -S bam/1_treated.sam
+7168 reads; of these:
+  7168 (100.00%) were paired; of these:
+    244 (3.40%) aligned concordantly 0 times
+    6924 (96.60%) aligned concordantly exactly 1 time
+    0 (0.00%) aligned concordantly >1 times
+    ----
+    244 pairs aligned concordantly 0 times; of these:
+      3 (1.23%) aligned discordantly 1 time
+    ----
+    241 pairs aligned 0 times concordantly or discordantly; of these:
+      482 mates make up the pairs; of these:
+        277 (57.47%) aligned 0 times
+        205 (42.53%) aligned exactly 1 time
+        0 (0.00%) aligned >1 times
+98.07% overall alignment rate
+++ nproc
++ samtools sort -@ 16 -o bam/1_treated.sorted.bam bam/1_treated.sam
+[bam_sort_core] merging from 0 files and 16 in-memory blocks...
++ samtools index bam/1_treated.sorted.bam
++ rm bam/1_treated.sam
++ for sample in 1_control 1_treated 2_control 2_treated
+++ nproc
++ hisat2 -p 16 -x index/ref -1 fastq/2_control.R1.fastq.gz -2 fastq/2_control.R2.fastq.gz -S bam/2_control.sam
+8478 reads; of these:
+  8478 (100.00%) were paired; of these:
+    241 (2.84%) aligned concordantly 0 times
+    8236 (97.15%) aligned concordantly exactly 1 time
+    1 (0.01%) aligned concordantly >1 times
+    ----
+    241 pairs aligned concordantly 0 times; of these:
+      3 (1.24%) aligned discordantly 1 time
+    ----
+    238 pairs aligned 0 times concordantly or discordantly; of these:
+      476 mates make up the pairs; of these:
+        249 (52.31%) aligned 0 times
+        226 (47.48%) aligned exactly 1 time
+        1 (0.21%) aligned >1 times
+98.53% overall alignment rate
+++ nproc
++ samtools sort -@ 16 -o bam/2_control.sorted.bam bam/2_control.sam
+[bam_sort_core] merging from 0 files and 16 in-memory blocks...
++ samtools index bam/2_control.sorted.bam
++ rm bam/2_control.sam
++ for sample in 1_control 1_treated 2_control 2_treated
+++ nproc
++ hisat2 -p 16 -x index/ref -1 fastq/2_treated.R1.fastq.gz -2 fastq/2_treated.R2.fastq.gz -S bam/2_treated.sam
+7514 reads; of these:
+  7514 (100.00%) were paired; of these:
+    271 (3.61%) aligned concordantly 0 times
+    7243 (96.39%) aligned concordantly exactly 1 time
+    0 (0.00%) aligned concordantly >1 times
+    ----
+    271 pairs aligned concordantly 0 times; of these:
+      3 (1.11%) aligned discordantly 1 time
+    ----
+    268 pairs aligned 0 times concordantly or discordantly; of these:
+      536 mates make up the pairs; of these:
+        276 (51.49%) aligned 0 times
+        260 (48.51%) aligned exactly 1 time
+        0 (0.00%) aligned >1 times
+98.16% overall alignment rate
+++ nproc
++ samtools sort -@ 16 -o bam/2_treated.sorted.bam bam/2_treated.sam
+[bam_sort_core] merging from 0 files and 16 in-memory blocks...
++ samtools index bam/2_treated.sorted.bam
++ rm bam/2_treated.sam
++ rm -rf fastq
++ set +x
