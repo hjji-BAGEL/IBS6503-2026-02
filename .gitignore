@@ -4,3 +4,6 @@
 __pycache__/
 .ipynb_checkpoints/
 .venv/
+
+# 수업 중에 받는 데이터 (6주차 약 65 MB)
+data/week6/

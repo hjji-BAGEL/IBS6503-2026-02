@@ -64,3 +64,4 @@ IBS6503-2026-02/
 | 3 | 저장소 가져오기와 코드 읽기 | `course/labs/week3/week3_reading.ipynb`, `course/labs/week3/top10.py` |
 | 4 | NGS 데이터 구조: read에서 유전체 브라우저까지 | `data/week4/`. IGV Desktop(igv.org/download) 설치 필요 |
 | 5 | DESeq2를 이용한 차등발현 분석 | `course/labs/week5/week5_deseq2.ipynb` |
+| 6 | Single-cell RNA-seq | `course/labs/week6/week6_scrna.ipynb`. 데이터(PBMC 3k, GEO GSE96583)는 수업 중에 `data/week6/`로 받음. 인터넷 필요 |
